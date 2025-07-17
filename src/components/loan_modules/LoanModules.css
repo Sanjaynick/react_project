@@ -1,0 +1,153 @@
+                /* LoanForm Component css Starts */
+
+.loan-form-div{
+    padding: 10px;
+    text-align: center;
+}
+.loan-form-div input{
+    padding: 5px;
+    width: 300px;
+    text-align: center;
+    font-size: 18px;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+.loan-form-div input::-webkit-inner-spin-button,::-webkit-outer-spin-button{
+    display: none;
+}
+.loan-form-div input:focus{
+    border: 2px solid rgb(0, 132, 255);
+}
+.loan-form{
+    margin-bottom: 20px;
+    text-align: center;
+}
+.loan-form button{
+    padding: 5px;
+    width: 300px;
+    text-align: center;
+    font-size: 18px;
+    outline: none;
+    background-color: rgb(66, 151, 231);
+    color: white;
+    border: none;
+     border-radius: 10px;
+     cursor: pointer;
+}
+
+                /* LoanForm Component css Ends */
+
+                /* LoanItem Component css Starts */
+
+                        
+.loan-item{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto;
+    width: 1000px;
+}
+.loan-item-details{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+}
+.loan-item-details table,tr,td{
+    border: 1px solid #d1c0c0;
+    border-collapse: collapse;
+    padding: 5px 10px;
+}
+.loan-item-details table tr td h5{
+    font-size: 15px;
+    text-align: center;
+}
+.loan-item-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.loan-item-buttons button{
+    padding: 5px;
+     text-align: center;
+    font-size: 18px;
+    outline: none;
+    background-color: rgb(66, 151, 231);
+    color: white;
+    border: none;
+     border-radius: 10px;
+     cursor: pointer;
+     width: 120px;
+}
+.loan-item-sub-div{
+    display: flex;
+     align-items: center;
+    justify-content: center;
+}
+
+                /* LoanItem Component css Ends */
+
+
+                /* Responsive design for mobile */
+
+
+@media screen and (max-width : 500px){
+    .loan-item{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 10px auto;
+    width: 380px;
+}
+.loan-item-details{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+}
+.loan-item-details table,tr,td{
+    border: 1px solid #d1c0c0;
+    border-collapse: collapse;
+    padding: 5px 10px;
+}
+.loan-item-details table tr td h5{
+    font-size: 15px;
+    text-align: center;
+}
+.loan-item-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.loan-item-buttons button{
+    padding: 5px;
+     text-align: center;
+    font-size: 18px;
+    outline: none;
+    background-color: rgb(66, 151, 231);
+    color: white;
+    border: none;
+     border-radius: 10px;
+     cursor: pointer;
+     width: 120px;
+}
+.loan-item-sub-div{
+    display: flex;
+     align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+}

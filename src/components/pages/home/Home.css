@@ -1,0 +1,26 @@
+.home-div {
+    padding: 20px;
+}
+.home-form-div {
+    margin: 40px auto;
+    text-align: center;
+    width: 600px;
+    border: 1px solid red;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5)
+
+}
+
+@media screen and (max-width : 500px){
+
+    .home-form-div {
+    margin: 40px auto;
+    text-align: center;
+    width: 380px;
+    border: 1px solid red;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5)
+}
+}
