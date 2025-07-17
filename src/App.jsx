@@ -4,7 +4,7 @@ import Header from './components/header/Header'
 import Home from './components/pages/home/Home'
 import InterestCalculator from './components/intrest_calculator/InterestCalculator'
 import {
-  BrowserRouter as Router, Routes , Route
+  HashRouter  as Router, Routes , Route
 } from 'react-router-dom'
 import LoanPage from './components/pages/loan/LoanPage'
 import LoanForm from './components/loan_modules/LoanForm'
