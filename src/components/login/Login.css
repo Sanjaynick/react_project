@@ -1,0 +1,108 @@
+                                /* Login Page component css starts */
+
+.login-page-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+.login-sub-page{
+    border: 1px solid red;
+      box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5);
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+}
+.login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.login-form input{
+   padding: 5px;
+    width: 300px;
+    text-align: center;
+    font-size: 18px;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+.login-form input:focus{
+    border: 2px solid rgb(0, 132, 255);
+}
+.login-form button{
+    padding: 5px;
+    width: 300px;
+    text-align: center;
+    font-size: 18px;
+    outline: none;
+    background-color: rgb(66, 151, 231);
+    color: white;
+    border: none;
+     border-radius: 10px;
+     cursor: pointer;
+}
+.login-form p{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+                                /* Login Page component css Ends */
+
+
+                                /* Signup Page Component css starts */
+
+
+.Signup-page-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+.signup-sub-page{
+    border: 1px solid red;
+     box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5);
+    padding: 20px;
+      text-align: center;
+    border-radius: 20px;
+}
+.signup-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.signup-form input{
+    padding: 5px;
+    width: 300px;
+    text-align: center;
+    font-size: 18px;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+.signup-form input:focus{
+        border: 2px solid rgb(0, 132, 255);
+}
+.signup-form button{
+     padding: 5px;
+    width: 300px;
+    text-align: center;
+    font-size: 18px;
+    outline: none;
+    background-color: rgb(66, 151, 231);
+    color: white;
+    border: none;
+     border-radius: 10px;
+     cursor: pointer;
+}
+.signup-form p{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+                                 /* Signup Page Component css Ends */

@@ -5,7 +5,7 @@
     font-family: sans-serif;
 }
 nav{
-    background-color: antiquewhite;
+    background-color: rgb(250, 248, 247);
     display: flex;
     align-items: center;
     justify-content: space-between;

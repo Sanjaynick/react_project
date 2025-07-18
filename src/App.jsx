@@ -4,7 +4,7 @@ import Header from './components/header/Header'
 import Home from './components/pages/home/Home'
 import InterestCalculator from './components/intrest_calculator/InterestCalculator'
 import {
-  HashRouter  as Router, Routes , Route
+  HashRouter  as Router, Routes , Route, useLocation
 } from 'react-router-dom'
 import LoanPage from './components/pages/loan/LoanPage'
 import LoanForm from './components/loan_modules/LoanForm'
@@ -17,6 +17,9 @@ import {
   updateDoc,
     onSnapshot
 } from 'firebase/firestore';
+import LoginPage from './components/login/LoginPage'
+import SignupPage from './components/login/SignupPage'
+import AppRoutes from './AppRoutes'
 
 
 function App() {
@@ -62,15 +65,18 @@ function App() {
     await updateDoc(loanDoc, { monthsPaid: updatedLoan.monthsPaid });
   };
 
+  //  const location = useLocation();
+  // const hideHeaderOnRoutes = ['/', '/signup'];
+
   return (
     <>
-    <Router>
-          <Header />
-          <Routes>
-            <Route path='/' element={<Home addLoan={addLoan}  />} />
-            <Route path='/loan' element={<LoanPage  loans={loans} removeLoan={removeLoan} payMonth={payMonth} />} />
-            <Route path='/InterestCalculator' element={<InterestCalculator />} />
-          </Routes>
+   <Router>
+      <AppRoutes
+        loans={loans}
+        addLoan={addLoan}
+        removeLoan={removeLoan}
+        payMonth={payMonth}
+      />
     </Router>
     </>
   )

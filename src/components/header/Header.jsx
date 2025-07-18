@@ -3,8 +3,23 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../../../node_modules/bootstrap/dist/js/bootstrap.min.js'
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebaseconfig';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+
+    const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/'); // Redirect to login page
+    } catch (error) {
+      console.error('Logout failed:', error.message);
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-light">
       <div className="container-fluid">
@@ -24,7 +39,7 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item   ">
-              <Link className="nav-link text-black" to="/">Home</Link>
+              <Link className="nav-link text-black" to="/home">Home</Link>
             </li>
             <li className="nav-item   ">
               <Link className="nav-link text-black" to="/loan">Loans</Link>
@@ -32,7 +47,9 @@ const Header = () => {
             <li className="nav-item   ">
               <Link className="nav-link text-black" to="/InterestCalculator">Calculator</Link>
             </li>
-
+                <li className="nav-item " onClick={handleLogout}>
+              Logout
+            </li>
           </ul>
         </div>
       </div>

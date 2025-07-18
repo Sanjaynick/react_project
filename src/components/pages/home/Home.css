@@ -9,13 +9,21 @@
     border-radius: 20px;
     padding: 20px;
     box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5)
-
+}
+.home-username{
+    padding: 40px 20px;
+    top: 30px;
+    font-size: 20px;
+    font-weight: 600;
+}
+.home-username strong{
+    font-size: 30px;
 }
 
 @media screen and (max-width : 500px){
 
     .home-form-div {
-    margin: 40px auto;
+    margin: 50px auto;
     text-align: center;
     width: 380px;
     border: 1px solid red;
