@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './LoanModules.css'
 
-const LoanForm = ({ addLoan }) => {
+const LoanForm = ({ addLoan, onclose, loan }) => {
   const [loanName, setLoanName] = useState('');
   const [amount, setAmount] = useState('');
   const [interest, setInterest] = useState('');
   const [duration, setDuration] = useState('');
 
-  const calculateEMI = (P, R, N) => {
+  const calculatePayment = (P, R, N) => {
     const monthlyRate = R / 12 / 100;
     const emi = (P * monthlyRate * Math.pow(1 + monthlyRate, N)) /
                 (Math.pow(1 + monthlyRate, N) - 1) + (P * R * N) / ( 100 * N);
@@ -24,15 +24,18 @@ const LoanForm = ({ addLoan }) => {
     const rate = parseFloat(interest);
     const months = parseInt(duration);
 
-    const emi = calculateEMI(principal, rate, months);
+    const payment = calculatePayment(principal, rate, months);
+    const totalInterest = (principal * rate * months) / ( 100 * months ).toFixed(2);
     const loan = {
       id: uuidv4(),
       loanName : loansname,
       amount: principal,
       interest: rate,
       duration: months,
-      emi,
+      totalInterest,
+      payment,
       monthsPaid: 0,
+      status:"Ongoing"
     };
 
     addLoan(loan);
@@ -40,10 +43,13 @@ const LoanForm = ({ addLoan }) => {
     setAmount('');
     setInterest('');
     setDuration('');
+
+    alert("Your Form Submitted Successfully")
   };
 
   return (
     <form onSubmit={handleSubmit} className='loan-form'>
+      <h1>Enter Your Loan Form to Track</h1>
       <div className='loan-form-div'>
         <input
           type="text"
@@ -81,6 +87,7 @@ const LoanForm = ({ addLoan }) => {
         />
       </div>
       <button type="submit">Add Loan</button>
+      <button onClick={onclose} >Cancel</button>
     </form>
   );
 };

@@ -1,0 +1,52 @@
+.dashboard-div-container{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 20px;
+    width: 800px;
+    margin: 50px auto;
+}
+.dashboard-first-card{
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+     box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5);
+     background-color: #E1EBEE;
+      color: #ff3c00;
+}
+.dashboard-second-card{
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+     box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5);
+     background-color: #E1EBEE;
+     color: #ff3c00;
+}
+
+                                        /* DashBoard Component media Query */
+
+
+@media screen and (max-width: 500px){
+    .dashboard-div-container{
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
+    gap: 20px;
+    width: 300px;
+    margin: 50px auto;
+}
+.dashboard-first-card{
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+     box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5);
+     background-color: #E1EBEE;
+      color: #ff3c00;
+}
+.dashboard-second-card{
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+     box-shadow : 2px 3px 2px 2px rgba(238, 7, 7, 0.5);
+     background-color: #E1EBEE;
+     color: #ff3c00;
+}
+}

@@ -40,7 +40,7 @@ const InterestCalculator = () => {
   const n = tenure
   const monthlyInterests = (p * R * n) / (100 * n)
   const totalIntrests = monthlyInterests * n
-  const totalPay = Number(p) + Number(totalIntrests)
+  // const totalPay = Number(p) + Number(totalIntrests)
 
   const calcualtion = () => {
     const result1 = monthlyInterests
@@ -55,7 +55,8 @@ const InterestCalculator = () => {
     const result4 = totalIntrests
     setTotalInterest(result4.toFixed(2))
 
-    const result5 = totalPay
+    // const result5 = totalPay
+    const result5 = result3 * n
     setTotalPayment(result5.toFixed(2))
   }
 

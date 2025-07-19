@@ -5,8 +5,11 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Lege
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const LoanProgressChart = ({ loan }) => {
-  const paid = (loan.emi * loan.monthsPaid).toFixed(2);
-  const remaining = (loan.amount + (loan.amount * loan.interest * loan.duration) / ( 100 * loan.duration ) * loan.duration) - Number(paid).toFixed(2);
+  const paid = (loan.payment * loan.monthsPaid).toFixed(2);
+
+  // const remaining = ((loan.amount + (loan.amount * loan.interest * loan.duration) / ( 100 * loan.duration ) * loan.duration)) - Number(paid).toFixed(2);
+
+  const remaining = (loan.payment * loan.duration) - Number(paid).toFixed(2);
 
   const data = {
     labels: ['Loan Progress'],

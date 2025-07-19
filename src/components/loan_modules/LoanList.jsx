@@ -2,10 +2,18 @@ import React from 'react';
 import LoanItem from './LoanItem';
 
 const LoanList = ({ loans, removeLoan, payMonth }) => {
+
+     const allFinished = loans.filter(loan => loan.status == "Ongoing")
+     console.log(allFinished);
+
+     if(allFinished.length == 0){
+      return <p className='all-finished'>All Loans Are Finished</p>
+     }
+
   return (
     <div>
       {
-        loans.map((loan) => (
+        allFinished.map((loan) => (
           <LoanItem key={loan.id} loan={loan} removeLoan={removeLoan} payMonth={payMonth} />
         ))
         }

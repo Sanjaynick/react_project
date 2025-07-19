@@ -10,7 +10,7 @@ const LoanBarChart = ({ loans }) => {
     datasets: [
       {
         label: 'EMI Amount (₹)',
-        data: loans.map((loan) => parseFloat(loan.emi)),
+        data: loans.map((loan) => parseFloat(loan.payment)),
         backgroundColor: '#36A2EB',
       },
     ],

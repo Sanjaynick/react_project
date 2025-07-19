@@ -25,15 +25,14 @@ const SignupPage = () => {
     }
 
     try {
-      // 1. Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Save additional data (username) in Firestore
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         username: username,
         email: email,
+        password:password,
         createdAt: new Date()
       });
 

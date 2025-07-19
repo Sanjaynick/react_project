@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react'
 import './index.css'
-import Header from './components/header/Header'
-import Home from './components/pages/home/Home'
-import InterestCalculator from './components/intrest_calculator/InterestCalculator'
 import {
   HashRouter  as Router, Routes , Route, useLocation
 } from 'react-router-dom'
-import LoanPage from './components/pages/loan/LoanPage'
-import LoanForm from './components/loan_modules/LoanForm'
 import { db } from './firebaseconfig';
 import {
   collection,
@@ -17,8 +12,6 @@ import {
   updateDoc,
     onSnapshot
 } from 'firebase/firestore';
-import LoginPage from './components/login/LoginPage'
-import SignupPage from './components/login/SignupPage'
 import AppRoutes from './AppRoutes'
 
 
@@ -63,10 +56,11 @@ function App() {
     const updatedLoan = { ...loan, monthsPaid: loan.monthsPaid + 1 };
     const loanDoc = doc(db, 'loans', id);
     await updateDoc(loanDoc, { monthsPaid: updatedLoan.monthsPaid });
-  };
 
-  //  const location = useLocation();
-  // const hideHeaderOnRoutes = ['/', '/signup'];
+    if(updatedLoan.monthsPaid == loan.duration){
+      await updateDoc(loanDoc, {status: "Finished"})
+    }
+  };
 
   return (
     <>

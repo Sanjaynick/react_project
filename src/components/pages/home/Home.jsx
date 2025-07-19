@@ -3,26 +3,37 @@ import React, { useState, useEffect } from 'react';
 import './Home.css'
 import LoanForm from '../../loan_modules/LoanForm';
 import { useUser } from '../../../UserContext';
+import DashBoard from '../../dashboard/DashBoard';
 
 
 const Home = ({addLoan}) => {
 
-  const user = useUser();
+  const [showPopup, setShowPopup] = useState(false)
+
+  const handleShowPopup = () => {
+    setShowPopup(true)
+  }
+
+  const handleClosePopup = () => {
+    setShowPopup(false)
+  }
+
+  const {userData} = useUser();
 
   return (
     <>
-    {user && (
+    {userData && (
           <span className='home-username'>
-            Welcome, <strong>{user.username.toUpperCase()}</strong>
+            Welcome, <strong>{userData?.username.toUpperCase()}</strong>
           </span>
         )}
-    <div className='home-div'>
-      <div className="home-form-div">
-      <h1>Enter Your Loan Amount To Track</h1>
-      <LoanForm addLoan={addLoan} />
-      </div>
 
-    </div>
+        <DashBoard />
+
+        <button onClick={handleShowPopup} className='home-add-btn'>Add</button>
+
+     {showPopup &&  <LoanForm addLoan={addLoan} onclose={handleClosePopup} />}
+
     </>
 
    

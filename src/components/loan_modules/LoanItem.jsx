@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LoanChart from '../loan_chart/LoanChart';
 import LoanProgressChart from '../loan_chart/LoanProgressChart';
 
 const LoanItem = ({ loan, removeLoan, payMonth }) => {
+
   return (
     <div className='loan-item'>
       <div className="loan-item-details">
@@ -20,13 +21,17 @@ const LoanItem = ({ loan, removeLoan, payMonth }) => {
               <td><h5>Interest Rate</h5></td>
               <td><h5>{loan.interest}%</h5></td>
             </tr>
+              <tr>
+              <td><h5>Monthly Interest</h5></td>
+              <td><h5>₹ {loan.totalInterest}</h5></td>
+            </tr>
             <tr>
               <td><h5>Duration</h5></td>
               <td><h5>{loan.duration} months</h5></td>
             </tr>
             <tr>
               <td><h5>Monthly Pay</h5></td>
-              <td><h5>₹{loan.emi}</h5></td>
+              <td><h5>₹ {loan.payment}</h5></td>
             </tr>
             <tr>
               <td><h5>Months Paid</h5></td>
@@ -37,7 +42,7 @@ const LoanItem = ({ loan, removeLoan, payMonth }) => {
 
         <div className="loan-item-buttons">
           <button onClick={() => payMonth(loan.id)} disabled={loan.monthsPaid === loan.duration}>
-            Pay EMI
+            Pay Loan
           </button>
 
           <button onClick={() => removeLoan(loan.id)} style={{ marginLeft: 10 }}>
@@ -48,7 +53,6 @@ const LoanItem = ({ loan, removeLoan, payMonth }) => {
       </div>
 
       <div className="loan-item-sub-div">
-        <LoanChart loan={loan} />
         <LoanProgressChart loan={loan} />
       </div>
     </div>
