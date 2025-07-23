@@ -4,7 +4,6 @@ import LoanItem from './LoanItem';
 const LoanList = ({ loans, removeLoan, payMonth }) => {
 
      const allFinished = loans.filter(loan => loan.status == "Ongoing")
-     console.log(allFinished);
 
      if(allFinished.length == 0){
       return <p className='all-finished'>All Loans Are Finished</p>

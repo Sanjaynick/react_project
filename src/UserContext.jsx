@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
+import { doc, getDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
 import { auth, db } from './firebaseconfig';
 
 const UserContext = createContext();
@@ -26,40 +26,74 @@ export const UserProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  useEffect (() => {
-    const fetchOngoingLoans = async () => {
-      try {
-        const loanRef = collection(db, 'loans')
-        const ongoingQuery = query(loanRef, where('status', '==', 'Ongoing'))
 
-        const snapshot = await getDocs(ongoingQuery)
-        setOngoingCount(snapshot.size)
+useEffect(() => {
+  const auth = getAuth();
+   let unsubscribeSnapshot = null;
 
-      }
-      catch(err){
-        console.log("Error Fetching Count :", err);
-        
-      }
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+      setOngoingCount(0);
+     if (unsubscribeSnapshot) unsubscribeSnapshot(); // cleanup if needed
+      return;
     }
-    fetchOngoingLoans()
-  }, [])
+
+    try {
+      const loanRef = collection(db, 'loans');
+      const ongoingQuery = query(
+        loanRef,
+        where('status', '==', 'Ongoing'),
+        where('userId', '==', user.uid)
+      );
+
+         unsubscribeSnapshot = onSnapshot(ongoingQuery, (snapshot) => {
+      setOngoingCount(snapshot.size); // Real-time update
+    });
+ 
+    } catch (err) {
+      console.log("Error Fetching Count :", err);
+    }
+  });
+
+  return () => {
+    unsubscribe()
+    if(unsubscribeSnapshot) unsubscribeSnapshot()
+  };
+}, []);
 
   useEffect(() => {
-    const fetchFinishedLoans = async () => {
-      try{
-        const loansRef = collection(db, 'loans')
-        const finishedLoansQuery = query(loansRef, where('status', '==', 'Finished'))
+    const  auth = getAuth()
+    let unsubscribeSnapshot = null;
 
-        const snapshot = await getDocs(finishedLoansQuery)
-        setFinishedCount(snapshot.size)
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+
+      if(!user){
+        setFinishedCount(0)
+        if (unsubscribeSnapshot) unsubscribeSnapshot(); // cleanup if needed
+      return;
+      }
+
+      try{
+        const loanrefs = collection(db, 'loans')
+        const finishedQuery = query(loanrefs, where('status', '==', 'Finished'), where('userId', '==', user.uid))
+        
+            const unsubscribeSnapshot = onSnapshot(finishedQuery, (snapshot) => {
+            setFinishedCount(snapshot.size); // Real-time update
+    });
+
+    // Clean up listener when user logs out
+    return () => unsubscribeSnapshot();
       }
       catch(err){
-        console.log("Error Fetching Count : ", err);
-        
+        console.log("cant't get finished count : ", err);
       }
-    }
 
-    fetchFinishedLoans()
+    })
+     return () => {
+    unsubscribe()
+    if(unsubscribeSnapshot) unsubscribeSnapshot()
+  };
   }, [])
   
   return (

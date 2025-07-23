@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-light">
       <div className="container-fluid">
-        <Link className="navbar-brand  text-black " to="/">Loan Tracker</Link>
+        <Link className="navbar-brand  text-black " to="/home">Loan Tracker</Link>
         <button
           className="navbar-toggler bg-black"
           type="button"

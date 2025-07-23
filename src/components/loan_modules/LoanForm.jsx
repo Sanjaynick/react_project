@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './LoanModules.css'
+import { getAuth, onAuthStateChanged  } from 'firebase/auth';
 
 const LoanForm = ({ addLoan, onclose, loan }) => {
   const [loanName, setLoanName] = useState('');
   const [amount, setAmount] = useState('');
   const [interest, setInterest] = useState('');
   const [duration, setDuration] = useState('');
+  const [dueDate, setDueDate] = useState('')
 
   const calculatePayment = (P, R, N) => {
     const monthlyRate = R / 12 / 100;
@@ -23,15 +25,28 @@ const LoanForm = ({ addLoan, onclose, loan }) => {
     const principal = parseFloat(amount);
     const rate = parseFloat(interest);
     const months = parseInt(duration);
+    const lastDate = parseInt(dueDate)
+    const lastPaidDate = null
 
     const payment = calculatePayment(principal, rate, months);
     const totalInterest = (principal * rate * months) / ( 100 * months ).toFixed(2);
+
+     const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert('You must be logged in to add a loan.');
+    return;
+  }
+
     const loan = {
-      id: uuidv4(),
+      userId: user.uid,
       loanName : loansname,
       amount: principal,
       interest: rate,
       duration: months,
+      duedate:lastDate,
+      lastPaidDate,
       totalInterest,
       payment,
       monthsPaid: 0,
@@ -43,8 +58,11 @@ const LoanForm = ({ addLoan, onclose, loan }) => {
     setAmount('');
     setInterest('');
     setDuration('');
+    setDueDate('')
 
     alert("Your Form Submitted Successfully")
+
+    onclose()
   };
 
   return (
@@ -86,7 +104,16 @@ const LoanForm = ({ addLoan, onclose, loan }) => {
           required
         />
       </div>
-      <button type="submit">Add Loan</button>
+      <div className='loan-form-div'>
+        <input
+          type="number"
+          placeholder="Due Date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+          required
+        />
+      </div>
+      <button type="submit" >Add Loan</button>
       <button onClick={onclose} >Cancel</button>
     </form>
   );

@@ -22,8 +22,6 @@ const LoginPage = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      
-
       // 2. (Optional) Get extra user data (like username) from Firestore
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
@@ -38,7 +36,6 @@ const LoginPage = () => {
       setError(err.message);
     }
   };
-
 
     return (
       <>

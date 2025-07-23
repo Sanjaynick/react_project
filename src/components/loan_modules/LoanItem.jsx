@@ -34,6 +34,10 @@ const LoanItem = ({ loan, removeLoan, payMonth }) => {
               <td><h5>₹ {loan.payment}</h5></td>
             </tr>
             <tr>
+              <td><h5>Due Date</h5></td>
+              <td><h5>{loan.duedate}</h5></td>
+            </tr>
+            <tr>
               <td><h5>Months Paid</h5></td>
               <td><h5>{loan.monthsPaid} / {loan.duration}</h5></td>
             </tr>
@@ -41,10 +45,6 @@ const LoanItem = ({ loan, removeLoan, payMonth }) => {
         </table>
 
         <div className="loan-item-buttons">
-          <button onClick={() => payMonth(loan.id)} disabled={loan.monthsPaid === loan.duration}>
-            Pay Loan
-          </button>
-
           <button onClick={() => removeLoan(loan.id)} style={{ marginLeft: 10 }}>
             Remove
           </button>
