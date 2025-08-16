@@ -115,6 +115,25 @@ function App() {
   }, [loans])
 
 
+  useEffect(() => {
+  const auth = getAuth();
+  const handleUnload = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      // Reset isLoggedIn in Firestore
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, { isLoggedIn: false });
+    }
+  };
+
+  window.addEventListener('beforeunload', handleUnload);
+
+  return () => {
+    window.removeEventListener('beforeunload', handleUnload);
+  };
+}, []);
+
+
   return (
     <>
       <Router>

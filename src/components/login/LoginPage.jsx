@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
-import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebaseconfig';
 
@@ -13,6 +13,21 @@ const LoginPage = () => {
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
 
+  // Reset isLoggedIn if user closes browser or refreshes
+  useEffect(() => {
+    const handleUnload = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+        await updateDoc(userDocRef, { isLoggedIn: false });
+        await signOut(auth);
+      }
+    };
+
+    window.addEventListener('beforeunload', handleUnload);
+    return () => window.removeEventListener('beforeunload', handleUnload);
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -23,6 +38,7 @@ const LoginPage = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // Email verification check
       if (!user.emailVerified) {
         setInfoMsg('Please verify your email before logging in. Check your inbox.');
         setCanResend(true);
@@ -36,6 +52,7 @@ const LoginPage = () => {
         const userData = userSnap.data();
         if (userData.isLoggedIn) {
           alert("This account is already logged in on another device.");
+          await signOut(auth); // Sign out to prevent stuck session
           return;
         }
         await updateDoc(userDocRef, { isLoggedIn: true });
@@ -48,12 +65,16 @@ const LoginPage = () => {
   };
 
   const resendVerification = async () => {
-    const user = auth.currentUser;
-    if (user) {
-      await sendEmailVerification(user);
-      alert("Verification email sent again. Check your inbox!");
-    } else {
-      alert("Please try logging in again to resend the verification email.");
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        await sendEmailVerification(user);
+        alert("Verification email sent again. Check your inbox!");
+      } else {
+        alert("Please try logging in again to resend the verification email.");
+      }
+    } catch (err) {
+      alert(err.message);
     }
   };
 
@@ -67,7 +88,7 @@ const LoginPage = () => {
           <h1>Log In</h1>
           <form className='login-form' onSubmit={handleLogin}>
             <input
-              type="text"
+              type="email"
               placeholder='Enter Your Email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}

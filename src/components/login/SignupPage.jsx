@@ -24,28 +24,29 @@ const SignupPage = () => {
     }
 
     try {
-      // 1️⃣ Create user
+      // 1️⃣ Create user with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2️⃣ Save user data in Firestore
+      // 2️⃣ Save user data in Firestore with lastActive timestamp
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         username,
         email,
-        createdAt: new Date()
+        createdAt: new Date(),
+        lastActive: new Date(0) // session inactive until login
       });
 
       // 3️⃣ Send email verification
       await sendEmailVerification(user);
 
-      setSuccessMsg('Signup successful! Verification email sent. Check your inbox.');
+      setSuccessMsg('Signup successful! Verification email sent. Please verify your email before logging in.');
       setUsername('');
       setEmail('');
       setPassword('');
 
-      // Optional: redirect after a delay
-      setTimeout(() => navigate('/'), 5000);
+      // Optional: redirect after delay
+      setTimeout(() => navigate('/'), 7000);
 
     } catch (err) {
       setError(err.message);
