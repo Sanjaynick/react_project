@@ -1,23 +1,22 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import './Login.css'
-import { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import './Login.css';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebaseconfig';
-import { useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
-
-   const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [successMsg, setSuccessMsg] = useState('');
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
 
     if (!username || !email || !password) {
       setError('Please fill all fields');
@@ -25,44 +24,70 @@ const SignupPage = () => {
     }
 
     try {
+      // 1️⃣ Create user
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // 2️⃣ Save user data in Firestore
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
-        username: username,
-        email: email,
-        password:password,
+        username,
+        email,
         createdAt: new Date()
       });
 
-      navigate('/home');
+      // 3️⃣ Send email verification
+      await sendEmailVerification(user);
+
+      setSuccessMsg('Signup successful! Verification email sent. Check your inbox.');
+      setUsername('');
+      setEmail('');
+      setPassword('');
+
+      // Optional: redirect after a delay
+      setTimeout(() => navigate('/'), 5000);
+
     } catch (err) {
       setError(err.message);
     }
   };
 
-
   return (
     <>
-    <nav>
+      <nav>
         <h2>Loan Tracker</h2>
       </nav>
-     <div className="Signup-page-container">
-            <div className="signup-sub-page">
-                <h1>Sign Up</h1>
-                <form className='signup-form' onSubmit={handleSignup} > 
-                    <input type="text" placeholder='Enter Your Email' value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <input type="text" placeholder='Create UserName' value={username} onChange={(e) => setUsername(e.target.value)} />
-                    <input type="password" placeholder='Create Your Password' value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <button>Sign Up</button>
-                    <p>Already have an account <span><Link to='/'>Log In</Link></span></p>
-                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                </form>
-            </div>
+      <div className="Signup-page-container">
+        <div className="signup-sub-page">
+          <h1>Sign Up</h1>
+          <form className='signup-form' onSubmit={handleSignup}> 
+            <input
+              type="email"
+              placeholder='Enter Your Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder='Create UserName'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder='Create Your Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type='submit'>Sign Up</button>
+            <p>Already have an account? <span><Link to='/'>Log In</Link></span></p>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
+          </form>
         </div>
-        </>
-  )
-}
+      </div>
+    </>
+  );
+};
 
-export default SignupPage
+export default SignupPage;

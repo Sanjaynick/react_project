@@ -7,6 +7,9 @@ import LoginPage from './components/login/LoginPage'
 import SignupPage from './components/login/SignupPage'
 import PrivateRoute from './PrivateRoute'
 import FinishedLoan from './components/pages/finshedloan/FinishedLoan'
+import CreateGroup from './components/pages/group/CreateGroup'
+import GroupsList from './components/pages/group/GroupList'
+import GroupPage from './components/pages/group/GroupPage'
 
 function AppRoutes({ loans, addLoan, removeLoan, payMonth }) {
   const location = useLocation()
@@ -53,7 +56,24 @@ function AppRoutes({ loans, addLoan, removeLoan, payMonth }) {
           />
           </PrivateRoute>
           } />
+          <Route path='/creategroup' element={
+           <PrivateRoute>
+          <CreateGroup />
+          </PrivateRoute>
+          } />
+           <Route path='/grouplist' element={
+           <PrivateRoute>
+          <GroupsList />
+          </PrivateRoute>
+          } />
+          <Route path='/group/:groupId' element={
+           <PrivateRoute>
+          <GroupPage />
+          </PrivateRoute>
+          } />
+
       </Routes>
+      
     </>
   )
 }

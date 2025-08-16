@@ -48,6 +48,18 @@
     font-size: 18px;
     font-weight: 600;
 }
+.login-sub-page button{
+     padding: 5px;
+    width: 300px;
+    text-align: center;
+    font-size: 18px;
+    outline: none;
+    background-color: rgb(66, 151, 231);
+    color: white;
+    border: none;
+     border-radius: 10px;
+     cursor: pointer;
+}
 
                                 /* Login Page component css Ends */
 
