@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
-import { signInWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebaseconfig';
 
 const LoginPage = () => {
@@ -12,21 +12,6 @@ const LoginPage = () => {
   const [infoMsg, setInfoMsg] = useState('');
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
-
-  // Reset isLoggedIn if user closes browser or refreshes
-  useEffect(() => {
-    const handleUnload = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const userDocRef = doc(db, 'users', user.uid);
-        await updateDoc(userDocRef, { isLoggedIn: false });
-        await signOut(auth);
-      }
-    };
-
-    window.addEventListener('beforeunload', handleUnload);
-    return () => window.removeEventListener('beforeunload', handleUnload);
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,7 +23,6 @@ const LoginPage = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Email verification check
       if (!user.emailVerified) {
         setInfoMsg('Please verify your email before logging in. Check your inbox.');
         setCanResend(true);
@@ -50,31 +34,34 @@ const LoginPage = () => {
 
       if (userSnap.exists()) {
         const userData = userSnap.data();
-        if (userData.isLoggedIn) {
+        const now = new Date();
+        const lastActive = userData.lastActive?.toDate?.() || now;
+        const diffSeconds = (now - lastActive) / 1000;
+
+        if (userData.isLoggedIn && diffSeconds <= 300) {
           alert("This account is already logged in on another device.");
-          await signOut(auth); // Sign out to prevent stuck session
           return;
         }
-        await updateDoc(userDocRef, { isLoggedIn: true });
-      }
 
-      navigate('/home');
+        await updateDoc(userDocRef, {
+          isLoggedIn: true,
+          lastActive: serverTimestamp(),
+        });
+
+        navigate('/home');
+      }
     } catch (err) {
       setError(err.message);
     }
   };
 
   const resendVerification = async () => {
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        await sendEmailVerification(user);
-        alert("Verification email sent again. Check your inbox!");
-      } else {
-        alert("Please try logging in again to resend the verification email.");
-      }
-    } catch (err) {
-      alert(err.message);
+    const user = auth.currentUser;
+    if (user) {
+      await sendEmailVerification(user);
+      alert("Verification email sent again. Check your inbox!");
+    } else {
+      alert("Please try logging in again to resend the verification email.");
     }
   };
 
@@ -104,11 +91,13 @@ const LoginPage = () => {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {infoMsg && <p style={{ color: 'orange' }}>{infoMsg}</p>}
           </form>
+
           {canResend && (
             <button onClick={resendVerification} style={{ marginTop: '10px' }}>
               Resend Verification Email
             </button>
           )}
+
         </div>
       </div>
     </>

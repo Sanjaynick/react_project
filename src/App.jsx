@@ -48,6 +48,21 @@ function App() {
     return () => unsubscribeAuth();
   }, []);
 
+
+    useEffect(() => {
+    const auth = getAuth();
+    const interval = setInterval(async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+        await updateDoc(userDocRef, { lastActive: new Date() });
+      }
+    }, 60000); // every 1 min
+
+    return () => clearInterval(interval);
+  }, []);
+
+
   // Add loan to Firestore
   const addLoan = async (loan) => {
     const auth = getAuth()
@@ -113,25 +128,6 @@ function App() {
   useEffect(() => {
     payMonth()
   }, [loans])
-
-
-  useEffect(() => {
-  const auth = getAuth();
-  const handleUnload = async () => {
-    const user = auth.currentUser;
-    if (user) {
-      // Reset isLoggedIn in Firestore
-      const userDocRef = doc(db, 'users', user.uid);
-      await updateDoc(userDocRef, { isLoggedIn: false });
-    }
-  };
-
-  window.addEventListener('beforeunload', handleUnload);
-
-  return () => {
-    window.removeEventListener('beforeunload', handleUnload);
-  };
-}, []);
 
 
   return (
